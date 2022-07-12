@@ -24,6 +24,7 @@ files_path
 
 # The `files_path` object is a vector of five elements (after all, there are five files) containing the full name of the file. Let's use the contents of this vector in the `read.csv()` function. We will use the a loop to read all data at once.
 file_names <- gsub(".csv", "", basename(files_path), fixed = TRUE)
+
 for (i in 1:length(files_path)) {
   data <- read.csv(files_path[[i]])
   assign(file_names[i], data)
@@ -120,7 +121,13 @@ n_sp <- nrow(splist)
 n_sp
 
 # creating table with each species in each area species in rows
-comm_df <- tidyr::pivot_longer(comm, cols = 2:ncol(comm), names_to = "TaxCode", values_to = "Abundance")
+comm_df <- tidyr::pivot_longer(comm,
+                               cols = 2:ncol(comm),
+                               names_to = "TaxCode",
+                               values_to = "Abundance")
+
+comm_df2 <- tidyr::pivot_longer(comm,
+                                cols = 2:ncol(comm))
 
 # Let's check the object's header and dimensions.
 dim(comm_df)
@@ -135,8 +142,13 @@ head(comm_df)
 # Table `comm_df` and `splist`
 
 # First, let's add the species information contained in `splist` to `comm_df` using the `TaxCode` column.
-comm_sp <- merge(comm_df, splist, by = "TaxCode")
+comm_sp <- merge(comm_df, splist, by = "TaxCode", sort = FALSE)
 head(comm_sp)
+
+
+comm_sp_join <- dplyr::left_join(comm_df, splist, by = "TaxCode")
+
+
 # same as: dplyr::left_join(comm_df, splist, by = "TaxCode)
 
 # Table `comm_sp` and `traits`
@@ -155,6 +167,8 @@ head(comm_traits)
 
 comm_total <- merge(comm_traits, envir_coord, by = "Sites")
 head(comm_total)
+
+if (!dir.exists("data/processed")) dir.create("data/processed")
 
 # Finally, we end our script writing the modified table. We will use the function `write.csv()`.
 write.csv(x = comm_total,
