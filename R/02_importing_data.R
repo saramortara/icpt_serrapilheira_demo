@@ -20,9 +20,9 @@ names(data_list) <- cestes_names
 length(data_list)
 
 # Inspecting data
-head(data_list$envir)
-dim(data_list$envir)
-summary(envir$envir)
+head(envir)
+dim(envir)
+summary(envir)
 
 # Output 1: summary table ------------------------------------------------------
 
