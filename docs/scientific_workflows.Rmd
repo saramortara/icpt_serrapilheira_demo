@@ -40,7 +40,7 @@ Variation of environmental variables across sites is something.
 
 ```{r table}
 envir_tbl$mean_std <- paste(envir_tbl$mean, envir_tbl$std, sep = " $\\pm$ ")
-knitr::kable(envir_tbl[, c("mean", "mean_std")], 
+knitr::kable(envir_tbl[, c("variable", "mean_std")], 
              format = "simple",
              caption = "Table 1. Mean and standard deviation of environmental metrics across sites", 
              col.names = c("Variable", "Mean (± std)"), 
